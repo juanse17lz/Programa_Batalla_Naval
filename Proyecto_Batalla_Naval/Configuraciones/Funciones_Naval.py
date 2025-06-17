@@ -1,4 +1,20 @@
 import random
+from pygame import *
+
+def printear_lista_continua(lista:list):
+    """Recibe una lista y muestra sus elementos por pantalla.
+
+    Args:
+        lista (list): Lista cualquiera.
+    """
+    for i in range(len(lista)):
+        if type(lista[i]) == list:
+            printear_lista_continua(lista[i])
+        elif i == len(lista):
+            print(lista[i])
+        else:
+            print(lista[i],end=" ")
+
 
 def printear_matriz(matriz:list):
     for f in range(len(matriz)):
@@ -31,7 +47,7 @@ def inicializar_matriz(filas:int,columnas:int,valor_inicial=0)->list:
         matriz += [fila]
     return matriz
 
-def colocar_barco(matriz:list,barco:list):
+def colocar_barco(matriz:list,barco:list)->list:
     pos = bool_aleatorio()
     posicion_valida = False
     while posicion_valida == False:
@@ -54,22 +70,32 @@ def colocar_barco(matriz:list,barco:list):
                 matriz[fila][columna + i] = 1
             else:
                 matriz[fila + i][columna] = 1
+    coordenada = (fila,columna)
+    poscicion = pos
+    largo = len(barco)
+    datos_barco = [coordenada,poscicion,largo]
+    return datos_barco
 
 def colocacion_barcos(matriz:list,barco:list):
-    for i in range(len(barco)):
-        if len(barco) == 1:
-            for c in range(4):
-                colocar_barco(matriz,barco)
-        elif len(barco) == 2:
-            for c in range(3):
-                colocar_barco(matriz,barco)
-        elif len(barco) == 3:
-            for c in range(2):
-                colocar_barco(matriz,barco)
-        elif len(barco) == 4:
-            colocar_barco(matriz,barco)
+    lista_datos = []
+    if len(barco) == 1:
+        for c in range(4):
+            datos = colocar_barco(matriz,barco)
+            lista_datos.append(datos)
+    elif len(barco) == 2:
+        for c in range(3):
+            datos = colocar_barco(matriz,barco)
+            lista_datos.append(datos)
+    elif len(barco) == 3:
+        for c in range(2):
+            datos = colocar_barco(matriz,barco)
+            lista_datos.append(datos)
+    elif len(barco) == 4:
+        datos = colocar_barco(matriz,barco)
+        lista_datos.append(datos)
+    return lista_datos
 
-def tablero_juego(dificultad:str="F"):
+def tablero_juego(dificultad:str="F")->list:
     filas = 10
     columnas = 10
     repeticiones = 1
@@ -81,8 +107,6 @@ def tablero_juego(dificultad:str="F"):
         filas *= 4
         columnas *= 4
         repeticiones *= 3
-    else:
-        pass
 
     submarino = [1]
     destructore = [1,1]
@@ -91,11 +115,71 @@ def tablero_juego(dificultad:str="F"):
     barcos = [submarino,destructore,crucero,acorazado]
 
     tablero = inicializar_matriz(filas,columnas)
-
+    informacion_tablero = False
     for r in range(repeticiones):
         for barco in barcos:
-            colocacion_barcos(tablero,barco)
+            if informacion_tablero == False:
+                info_barcos = [colocacion_barcos(tablero,barco)]
+                informacion_tablero = True
+            else:
+                datos = colocacion_barcos(tablero,barco)
+                info_barcos.append(datos)
 
-    return tablero
+    lista_limpia = limpiar_datos(info_barcos)
+
+    tablero_info = [tablero,lista_limpia]
+    return tablero_info
         
+def limpiar_datos(lista_barcos:list)->list:
+    lista_limpia = []
+    for i in range(len(lista_barcos)):
+        tipos_barcos = lista_barcos[i]
+        for f in range(len(tipos_barcos)):
+            lista_limpia.append(tipos_barcos[f])
+            
+    return lista_limpia
 
+
+
+#Funciones Pygame
+def centrar_eje_x(superfice, objeto_a_centrar)->int:
+    """Se encarga de centrar un objeto en su eje X.
+
+    Args:
+        superfice : Superficie donde se va a centrar.
+        objeto_a_centrar : Objeto que se va a centrar.
+    Returns:
+        int: centro del eje X.
+    """
+    centro = superfice.x +(superfice.width - objeto_a_centrar.get_width())/2
+    return centro
+
+def centrar_eje_y(superfice, objeto_a_centrar)->int:
+    """Se encarga de centrar un objeto en su eje Y.
+
+    Args:
+        superfice : Superficie donde se va a centrar.
+        objeto_a_centrar : Objeto que se va a centrar.
+    Returns:
+        int: centro del eje Y.
+    """
+    centro = superfice.y +(superfice.height - objeto_a_centrar.get_height())/2
+    return centro
+
+def poner_boton(screen, boton, palabra:str, color_apretado, color_no_apretado, fuente):
+    """Se encarga de poner un boton en la pantalla.
+
+    Args:
+        screen : pantalla donde se colocara el boton.
+        boton : boton a colocar.(El boton ya debe estar creado con su posicion y tamaño.)
+        palabra (str): texto del boton.
+        color_apretado : color del boton.
+        color_no_apretado : color del boton al posicionarse encima.
+        fuente : fuente del texto.
+    """
+    if boton.collidepoint(mouse.get_pos()):
+        draw.rect(screen,(color_apretado), boton, 0)
+    else:
+        draw.rect(screen,(color_no_apretado), boton, 0)
+    texto = fuente.render(palabra, True, ("white"))
+    screen.blit(texto,(centrar_eje_x(boton,texto),centrar_eje_y(boton,texto)))
