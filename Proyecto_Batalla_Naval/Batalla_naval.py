@@ -20,10 +20,10 @@ ancho = screen.get_width()
 alto = screen.get_height()
 
 #IMAGENES
-fondo_menu = cargar_imagen("C:/Users/juans/programacion_full/Programacion2025/Clases/Proyecto_Batalla_Naval/Elementos_Naval/fondo_gpt1.webp",(width,height))
-fondo_juego = cargar_imagen("C:/Users/juans/programacion_full/Programacion2025/Clases/Proyecto_Batalla_Naval/Elementos_Naval/fondo_jugando.webp",(width,height))
-titulo_2 = cargar_imagen("C:/Users/juans/programacion_full/Programacion2025/Clases/Proyecto_Batalla_Naval/Elementos_Naval/titulo_pixel.png",(width*0.50,height*0.60))
-inicio_buque = cargar_imagen("C:/Users/juans/programacion_full/Programacion2025/Clases/Proyecto_Batalla_Naval/Elementos_Naval/buque_naval.webp",(width*0.80,height*0.80))
+fondo_menu = cargar_imagen("Elementos_Naval/fondo_gpt1.webp",(width,height))
+fondo_juego = cargar_imagen("Elementos_Naval/fondo_jugando.webp",(width,height))
+titulo_2 = cargar_imagen("Elementos_Naval/titulo_pixel.png",(width*0.50,height*0.60))
+inicio_buque = cargar_imagen("Elementos_Naval/buque_naval.webp",(width*0.80,height*0.80))
 
 #BOTONES
 boton_start = Rect(ancho/2-130/2,100,130,50)
@@ -67,7 +67,7 @@ musica = True
 dificultad = "F"
 
 #tablero_real = tablero_juego()
-pg.mixer.music.load("C:/Users/juans/programacion_full/Programacion2025/Clases/Proyecto_Batalla_Naval/Elementos_Naval/musica_juego.mp3")
+pg.mixer.music.load("Elementos_Naval/musica_juego.mp3")
 pg.mixer.music.play(-1)
 
 game = True

@@ -74,8 +74,8 @@ def colocar_barco(matriz:list,barco:list)->list:
     coordenada = (fila,columna)
     poscicion = pos
     largo = len(barco)
-    cuadrado = pygame.Rect((27*columna)+27,(27*fila)+100,25,25)            
-    datos_barco = [coordenada,poscicion,largo]
+    #cuadrado = pygame.Rect((27*columna)+27,(27*fila)+100,25,25)            
+    datos_barco = [largo,coordenada,poscicion]
     return datos_barco
 
 def colocacion_barcos(matriz:list,barco:list):
@@ -96,6 +96,15 @@ def colocacion_barcos(matriz:list,barco:list):
         datos = colocar_barco(matriz,barco)
         lista_datos.append(datos)
     return lista_datos
+
+def limpiar_datos(lista_barcos:list)->list:
+    lista_limpia = []
+    for i in range(len(lista_barcos)):
+        tipos_barcos = lista_barcos[i]
+        for f in range(len(tipos_barcos)):
+            lista_limpia.append(tipos_barcos[f])
+            
+    return lista_limpia
 
 def tablero_juego(dificultad:str="F")->list:
     filas = 10
@@ -132,15 +141,6 @@ def tablero_juego(dificultad:str="F")->list:
     tablero_info = [tablero,lista_limpia]
     return tablero_info
         
-def limpiar_datos(lista_barcos:list)->list:
-    lista_limpia = []
-    for i in range(len(lista_barcos)):
-        tipos_barcos = lista_barcos[i]
-        for f in range(len(tipos_barcos)):
-            lista_limpia.append(tipos_barcos[f])
-            
-    return lista_limpia
-
 def generar_casilleros(matriz:list)->list:
     lista_casilleros = []
     for f in range(len(matriz)):
