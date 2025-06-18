@@ -1,5 +1,6 @@
 import random
 from pygame import *
+import pygame
 
 def printear_lista_continua(lista:list):
     """Recibe una lista y muestra sus elementos por pantalla.
@@ -73,6 +74,7 @@ def colocar_barco(matriz:list,barco:list)->list:
     coordenada = (fila,columna)
     poscicion = pos
     largo = len(barco)
+    cuadrado = pygame.Rect((27*columna)+27,(27*fila)+100,25,25)            
     datos_barco = [coordenada,poscicion,largo]
     return datos_barco
 
@@ -139,7 +141,17 @@ def limpiar_datos(lista_barcos:list)->list:
             
     return lista_limpia
 
+def generar_casilleros(matriz:list)->list:
+    lista_casilleros = []
+    for f in range(len(matriz)):
+        for c in range(len(matriz[0])):
+            cuadrado = pygame.Rect((27 * (1+c))+27,(27 * (1+f))+100,25,25) 
+            casillero = ((cuadrado),True)
+            lista_casilleros.append(casillero)
+    return lista_casilleros
 
+def colocar_casilla(key,screen):
+    pygame.draw.rect(screen,"white",key)
 
 #Funciones Pygame
 def centrar_eje_x(superfice, objeto_a_centrar)->int:

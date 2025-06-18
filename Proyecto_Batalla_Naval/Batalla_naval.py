@@ -20,6 +20,12 @@ screen = pg.display.set_mode((width,height),pg.RESIZABLE)
 ancho = screen.get_width()
 alto = screen.get_height()
 
+#IMAGENES
+fondo_menu = pg.image.load("C:/Users/juans/programacion_full/Programacion2025/Clases/Proyecto_Batalla_Naval/Elementos_Naval/Fondo_menu.jpg")
+fondo_menu = pg.transform.scale(fondo_menu,(width,height))
+fondo_juego = pg.image.load("C:/Users/juans/programacion_full/Programacion2025/Clases/Proyecto_Batalla_Naval/Elementos_Naval/🌊🌊🌊.jpg")
+fondo_juego = pg.transform.scale(fondo_juego,(width,height))
+
 #BOTONES
 boton_start = Rect(ancho/2-130/2,100,130,50)
 boton_dificultad = Rect(ancho/2-130/2,200,130,50)
@@ -69,9 +75,14 @@ while game:
             if menu:
                 if evento.button == 1:
                     if boton_start.collidepoint(mouse.get_pos()):
-                        tablero_real = tablero_juego(dificultad)
+                        juego = tablero_juego(dificultad)
+                        tablero_real = juego[0]
+                        lista_barcos = juego[1]
                         tablero_covertura = inicializar_matriz(len(tablero_real),len(tablero_real[0]))
-                        pass
+                        lista_casilleros = generar_casilleros(tablero_real)
+                        print(lista_casilleros)
+                        menu = False
+                        #jugando = True                        
                     elif boton_dificultad.collidepoint(mouse.get_pos()):
                         menu = False
                         menu_dificultad = True
@@ -93,7 +104,16 @@ while game:
                         dificultad = "D"
 
     #PANTALLA
-    screen.fill(color_azul)
+    if jugando:
+        screen.blit(fondo_juego,(0,0))
+    else:
+        screen.blit(fondo_menu,(0,0))
+
+    
+    if jugando:
+        menu_font = pg.font.SysFont("Arial Narrow", 25)
+        for i in range(len(lista_casilleros)):
+            colocar_casilla(lista_casilleros[i],screen)
 
     if menu:
         menu_font = pg.font.SysFont("Arial Narrow", 25)
