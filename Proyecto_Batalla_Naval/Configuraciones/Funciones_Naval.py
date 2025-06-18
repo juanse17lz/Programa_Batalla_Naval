@@ -195,3 +195,13 @@ def poner_boton(screen, boton, palabra:str, color_apretado, color_no_apretado, f
         draw.rect(screen,(color_no_apretado), boton, 0)
     texto = fuente.render(palabra, True, ("white"))
     screen.blit(texto,(centrar_eje_x(boton,texto),centrar_eje_y(boton,texto)))
+
+def cargar_imagen(ruta:str,medidas:tuple):
+    imagen = pygame.image.load(ruta)
+    imagen_transformada = pygame.transform.scale(imagen,medidas)
+    return imagen_transformada
+
+
+def escribir_palabara(screen,text, pos=(0,0), size=16, color=(0,0,0)):
+    font = pygame.font.SysFont("Consolas", size)
+    screen.blit(font.render(text, True, color), pos)
